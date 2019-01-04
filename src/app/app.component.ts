@@ -1,10 +1,97 @@
-import { Component } from '@angular/core';
+import {Component, OnInit, ViewChild, Inject} from '@angular/core';
+// import { } from 'googlemaps';
+import { } from '@types/googlemaps';
+import * as MarkerClusterer from '@google/markerclusterer';
+import {MatDialog, MatDialogRef} from '@angular/material';
+import {EventDetailsDialog} from './event-details/event-details.component';
+
+declare var google: any;
+
+export interface DialogData {
+  eventId: string;
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'angular-google-maps-test';
+
+export class AppComponent implements OnInit {
+  title = 'Angular Google Maps Test';
+
+  @ViewChild('gmap') gmapElement: any;
+  map: google.maps.Map;
+  public dialog: MatDialog;
+
+  constructor(public dialog: MatDialog) {
+    // dialog = dialogIn;
+  }
+
+  ngOnInit(): void {
+    let imageMarkerCluster = 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m';
+    // let imageMarkerCluster = '../assets/multiple-activities.png';
+    let mapProp = {
+      center: new google.maps.LatLng(-37.817760, 145.192001),
+      zoom: 15,
+      mapTypeId:          google.maps.MapTypeId.ROADMAP,
+      zoomControl: true,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.LEFT_TOP
+      },
+      mapTypeControl:     false,
+      streetViewControl:  false,
+      rotateControl:      false,
+      fullscreenControl:  false
+    };
+
+    this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+
+    let locations = [
+      {lat: -37.8826872, lng: 145.1308339},
+      {lat: -37.8005201, lng: 145.3043535},
+      {lat: -37.8891473, lng: 145.1645347}
+    ];
+
+    // let marker = new google.maps.Marker({position: {lat: -37.8005201, lng: 145.3043535}, map: this.map});
+
+    let markers = locations.map(function(location, i) {
+      let marker = new google.maps.Marker({
+        position: location,
+        label: ''+i
+      });
+
+      marker.addListener('click', function() {
+        this.map.setZoom(15);
+        this.map.setCenter(marker.getPosition());
+
+        // Display the event details dialog
+        // openDialog();
+        const dialogRef = this.dialog.open(EventDetailsDialog, {
+          width: '250px',
+          data: {eventId: 'TEST'}
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed ' + result);
+        });
+      });
+
+      return marker;
+    });
+
+    let marketCluster = new MarkerClusterer(this.map, markers, { imagePath: imageMarkerCluster});
+  }
+
+  // openDialog(): void {
+  //   const dialogRef = this.dialog.open(EventDetailsDialog, {
+  //     width: '250px',
+  //     data: {eventId: 'TEST'}
+  //   });
+  //
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed ' + result);
+  //   });
+  // }
+
 }
