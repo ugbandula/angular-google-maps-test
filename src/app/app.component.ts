@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, Inject} from '@angular/core';
+import {Component, OnInit, ViewChild, Inject, NgZone} from '@angular/core';
 // import { } from 'googlemaps';
 import { } from '@types/googlemaps';
 import * as MarkerClusterer from '@google/markerclusterer';
@@ -22,11 +22,24 @@ export class AppComponent implements OnInit {
 
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
-  public dialog: MatDialog;
+  // public dialog: MatDialog;
 
-  constructor(public dialog: MatDialog) {
-    // dialog = dialogIn;
+  constructor(private zone: NgZone, private dialog: MatDialog) {
+    // this.dialog = dialogIn;
+    // console.log(this.dialog);
   }
+
+  // openDialog(): void {
+  //   console.log(this.dialog);
+  //   const dialogRef = this.dialog.open(EventDetailsDialog, {
+  //     width: '250px',
+  //     data: {eventId: 'TEST'}
+  //   });
+  //
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed ' + result);
+  //   });
+  // }
 
   ngOnInit(): void {
     let imageMarkerCluster = 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m';
@@ -45,6 +58,7 @@ export class AppComponent implements OnInit {
       fullscreenControl:  false
     };
 
+    // console.log(this.dialog);
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
     let locations = [
@@ -55,43 +69,58 @@ export class AppComponent implements OnInit {
 
     // let marker = new google.maps.Marker({position: {lat: -37.8005201, lng: 145.3043535}, map: this.map});
 
-    let markers = locations.map(function(location, i) {
+    let markers: any;
+    // this.zone.run(() => {
+    markers = locations.map(function(location, i) {
       let marker = new google.maps.Marker({
         position: location,
         label: ''+i
       });
 
-      marker.addListener('click', function() {
+      google.maps.event.addListener(marker, 'click', function() {
         this.map.setZoom(15);
         this.map.setCenter(marker.getPosition());
 
         // Display the event details dialog
         // openDialog();
-        const dialogRef = this.dialog.open(EventDetailsDialog, {
-          width: '250px',
-          data: {eventId: 'TEST'}
-        });
 
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('The dialog was closed ' + result);
-        });
+        // this.zone.run(() => {
+          console.log(this.dialog);
+          const dialogRef = this.dialog.open(EventDetailsDialog, {
+            width: '250px',
+            data: {eventId: 'TEST'}
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed ' + result);
+          });
+        // });
       });
+
+      // marker.addListener('click', function() {
+      //   this.map.setZoom(15);
+      //   this.map.setCenter(marker.getPosition());
+      //
+      //   // Display the event details dialog
+      //   // openDialog();
+      //
+      //     console.log(this.dialog);
+      //     const dialogRef = this.dialog.open(EventDetailsDialog, {
+      //       width: '250px',
+      //       data: {eventId: 'TEST'}
+      //     });
+      //
+      //     dialogRef.afterClosed().subscribe(result => {
+      //       console.log('The dialog was closed ' + result);
+      //     });
+      //
+      // });
 
       return marker;
     });
+    // });
 
     let marketCluster = new MarkerClusterer(this.map, markers, { imagePath: imageMarkerCluster});
   }
-
-  // openDialog(): void {
-  //   const dialogRef = this.dialog.open(EventDetailsDialog, {
-  //     width: '250px',
-  //     data: {eventId: 'TEST'}
-  //   });
-  //
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed ' + result);
-  //   });
-  // }
 
 }
