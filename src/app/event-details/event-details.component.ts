@@ -7,9 +7,9 @@ import {DialogData} from '../app.component';
   templateUrl: './event-details.component.html'
 })
 
-export class EventDetailsDialog {
+export class EventDetailsDialogComponent {
 
-  constructor(public dialogRef: MatDialogRef<EventDetailsDialog>,
+  constructor(public dialogRef: MatDialogRef<EventDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {
   }
 

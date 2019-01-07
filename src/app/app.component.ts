@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild, Inject, NgZone} from '@angular/core';
-// import { } from 'googlemaps';
-import { } from '@types/googlemaps';
+import { } from 'googlemaps';
+// import { } from '@types/googlemaps';
 import * as MarkerClusterer from '@google/markerclusterer';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {EventDetailsDialog} from './event-details/event-details.component';
+import {EventDetailsDialogComponent} from './event-details/event-details.component';
 
 declare var google: any;
 
@@ -84,17 +84,18 @@ export class AppComponent implements OnInit {
         // Display the event details dialog
         // openDialog();
 
-        // this.zone.run(() => {
+        this.zone.run(() => {
           console.log(this.dialog);
-          const dialogRef = this.dialog.open(EventDetailsDialog, {
+          const dialogRef = this.dialog.open(EventDetailsDialogComponent, {
             width: '250px',
             data: {eventId: 'TEST'}
           });
 
+
           dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed ' + result);
           });
-        // });
+        });
       });
 
       // marker.addListener('click', function() {

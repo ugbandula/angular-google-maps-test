@@ -6,7 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {EventDetailsDialog} from './event-details/event-details.component';
+import {EventDetailsDialogComponent} from './event-details/event-details.component';
 import {MaterialsModule} from './material-module';
 
 @NgModule({
@@ -20,7 +20,10 @@ import {MaterialsModule} from './material-module';
   ],
   declarations: [
     AppComponent,
-    EventDetailsDialog
+    EventDetailsDialogComponent
+  ],
+  entryComponents: [
+    EventDetailsDialogComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
