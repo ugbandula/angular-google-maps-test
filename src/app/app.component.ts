@@ -29,18 +29,6 @@ export class AppComponent implements OnInit {
     // console.log(this.dialog);
   }
 
-  // openDialog(): void {
-  //   console.log(this.dialog);
-  //   const dialogRef = this.dialog.open(EventDetailsDialog, {
-  //     width: '250px',
-  //     data: {eventId: 'TEST'}
-  //   });
-  //
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed ' + result);
-  //   });
-  // }
-
   ngOnInit(): void {
     let imageMarkerCluster = 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m';
     // let imageMarkerCluster = '../assets/multiple-activities.png';
@@ -97,25 +85,6 @@ export class AppComponent implements OnInit {
           });
         });
       });
-
-      // marker.addListener('click', function() {
-      //   this.map.setZoom(15);
-      //   this.map.setCenter(marker.getPosition());
-      //
-      //   // Display the event details dialog
-      //   // openDialog();
-      //
-      //     console.log(this.dialog);
-      //     const dialogRef = this.dialog.open(EventDetailsDialog, {
-      //       width: '250px',
-      //       data: {eventId: 'TEST'}
-      //     });
-      //
-      //     dialogRef.afterClosed().subscribe(result => {
-      //       console.log('The dialog was closed ' + result);
-      //     });
-      //
-      // });
 
       return marker;
     });
