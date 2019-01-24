@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
         label: ''+i
       });
 
+      // TODO - This needs to be completed
       google.maps.event.addListener(marker, 'click', function() {
         this.map.setZoom(15);
         this.map.setCenter(marker.getPosition());
